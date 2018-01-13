@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Our game</title>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript">
+
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+// function preload() {
+
+//     game.load.image('sky', 'assets/sky.png');
+//     game.load.image('ground', 'assets/platform.png');
+//     game.load.image('shoot1', 'assets/shoot1.png');
+//     game.load.image('shoot1', 'assets/shoot1.png');
+//     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    
+
+// }
+
+// var player;
+// var platforms;
+// var cursors;
+// var shoot1;
+// var seconds;
+// var minutes;
+// var shoot1;
+// var score = 100 ;
+// var scoreText;
+// var counter =0;
+// var text ;
+
+
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+function preload() {
+
+    game.load.image('sky', 'assets/sky.png');
+    game.load.image('ground', 'assets/platform.png');
+    game.load.image('shoot1', 'assets/shoot1.png');
+    game.load.image('shoot', 'assets/shoot.png');
+    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    
+
+}
+
+var player;
+var platforms;
+var cursors;
+var shoot1;
+var seconds;
+var minutes;
+var shoot;
+var score = 100 ;
+var scoreText;
+
+
+
+var player;
+var cursors;
+
+function create() {
+
+    game.add.sprite(0, 0, 1920, 1920, 'sky');
+
+    game.world.setBounds(0, 0, 1920, 1920);
+
+    game.physics.startSystem(Phaser.Physics.P2JS);
+
+    player = game.add.sprite(game.world.centerX, game.world.centerY, 'dude');
+
+    game.physics.p2.enable(player);
+
+    player.body.fixedRotation = true;
+
+    cursors = game.input.keyboard.createCursorKeys();
+
+    //  Notice that the sprite doesn't have any momentum at all,
+    //  it's all just set by the camera follow type.
+    //  0.1 is the amount of linear interpolation to use.
+    //  The smaller the value, the smooth the camera (and the longer it takes to catch up)
+    game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+
+}
+
+function update() {
+
+    player.body.setZeroVelocity();
+
+    if (cursors.up.isDown)
+    {
+        player.body.moveUp(300)
+    }
+    else if (cursors.down.isDown)
+    {
+        player.body.moveDown(300);
+    }
+
+    if (cursors.left.isDown)
+    {
+        player.body.velocity.x = -300;
+    }
+    else if (cursors.right.isDown)
+    {
+        player.body.moveRight(300);
+    }
+
+}
+
+function render() {
+
+    game.debug.text("Arrows to move.", 32, 32);
+
+}
