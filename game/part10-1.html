@@ -1,0 +1,690 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Our game</title>
+    <script type="text/javascript" src="js/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(1365 , 660, Phaser.AUTO, '');
+
+
+var gameState1 = function(){
+    console.log("gameState1");
+};
+gameState1.prototype = {
+    preload : preload1,
+    create : create1,
+    update : update1
+};
+
+var gameState2 = function(){
+    console.log("gameState2");
+};
+gameState2.prototype = {
+    preload : preload2,
+    create : create2,
+    update : update2
+};
+
+var gameState3 = function(){
+    console.log("gameState3");
+};
+gameState3.prototype = {
+    preload : preload3,
+    create : create3,
+    update : update3
+};
+
+
+game.state.add('gameState1',gameState1);
+game.state.add('gameState2',gameState2);
+game.state.add('gameState3',gameState3);
+
+game.state.start('gameState1');
+
+function preload1(){
+
+}
+
+function create1(){
+    scoreText = game.add.text(game.world.width/2,game.world.height/2, 'Welcome !!!', { fontSize: '32px', fill: '#FFF' });
+    scoreText.anchor.setTo(0.5,0.5);
+    scoreText = game.add.text(game.world.width/2,game.world.height/2 + 42, 'Press arrow keys to proceed ', { fontSize: '32px', fill: '#FFF' });
+    scoreText.anchor.setTo(0.5,0.5);
+
+    cursors = game.input.keyboard.createCursorKeys();
+}
+
+function update1(){
+    if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown) {
+
+         //game.state.stop('gameState1');
+         game.state.start('gameState2');
+    }
+
+}
+
+
+
+var sky;
+
+
+function preload2() {
+
+    game.load.image('sky', 'assets/bg1.png');
+    game.load.image('horizontal', 'assets/hshoot.png');
+    game.load.image('ground', 'assets/platform.png');
+    game.load.image('shoot1', 'assets/shoot1.png');
+    game.load.image('star', 'assets/star.png');
+    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    
+
+}
+
+var player;
+var platforms;
+var cursors;
+var shoot1;
+var seconds;
+var minutes;
+var shoot1;
+var score = 100 ;
+var scoreText;
+var scoreText1;
+var counter =0;
+var text ;
+var star;
+var horizontal;
+
+function create2() {
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+     sky = game.add.sprite(0, 0, 'sky');
+     sky.scale.setTo(20,4);
+
+      platforms = game.add.group();
+
+      platforms.enableBody = true;
+
+      var ground;
+      ground = platforms.create(0, 1996, 'ground');
+
+      ground.scale.setTo(16, 2);
+      ground.body.immovable = true;
+
+      game.world.setBounds(0, 0, 5000, 2000);
+    //  Now let's create ledges
+    
+    var ledge = platforms.create(0, 600, 'ground');
+    ledge.body.immovable = true;  
+    var ledge = platforms.create(0, 1800*Math.random() +900, 'ground');
+    ledge.body.immovable = true;  
+
+    var ledge = platforms.create(520, 320*Math.random() + 230, 'ground');
+    //var ledge = platforms.create(520, 560*Math.random() + 330, 'ground');
+    //ledge.body.immovable = true;  
+    var ledge = platforms.create(520, 1660*Math.random() + 700, 'ground');
+    ledge.body.immovable = true;  
+
+     //var ledge = platforms.create(640,800*Math.random() +400, 'ground');
+      //ledge.body.immovable = true;
+     //var ledge = platforms.create(640,1070*Math.random() +900, 'ground');
+      //ledge.body.immovable = true;
+     //var ledge = platforms.create(630,1880*Math.random() +1100, 'ground');
+      //ledge.body.immovable = true;
+
+    var ledge = platforms.create(720, 810*Math.random() + 500, 'ground');
+    
+    //var ledge = platforms.create(730,700*Math.random() +400, 'ground');
+
+    var ledge = platforms.create(730, 850*Math.random() + 600, 'ground');
+    ledge.body.immovable = true;  
+     var ledge = platforms.create(800, 1800*Math.random() + 1100, 'ground');
+     ledge.body.immovable = true;  
+     
+     var ledge = platforms.create(900, 760*Math.random() + 630, 'ground');
+     var ledge = platforms.create(950,700*Math.random() +500, 'ground');
+     ledge.body.immovable = true;
+     var ledge = platforms.create(950,440*Math.random() +200, 'ground');
+     var ledge = platforms.create(930,1850*Math.random() +1050, 'ground');
+     ledge.body.immovable = true;
+
+    var ledge = platforms.create(1000, 1850*Math.random() + 930, 'ground');
+     ledge.body.immovable = true;  
+     var ledge = platforms.create(1040, 800*Math.random() + 200, 'ground');
+     ledge.body.immovable = true;  
+     var ledge = platforms.create(1250, 1850*Math.random() + 1230, 'ground');
+
+     var ledge = platforms.create(1400, 900*Math.random() + 700, 'ground');
+      ledge.body.immovable = true;
+     var ledge = platforms.create(1640, 880*Math.random() + 200, 'ground');
+      ledge.body.immovable = true;
+     var ledge = platforms.create(1740, 1880*Math.random() + 940, 'ground');
+     var ledge = platforms.create(1740, 1880*Math.random() + 940, 'ground');
+      ledge.body.immovable = true;
+    
+     
+     var ledge = platforms.create(1500, 880*Math.random() + 500, 'ground');
+    //  ledge.body.immovable = true;
+    var ledge = platforms.create(2000, 850*Math.random() + 200, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2000, 1050*Math.random() + 900, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2000, 1850*Math.random() +1100, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(2105,1850*Math.random() + 1200, 'ground');
+     
+     var ledge = platforms.create(2750, 1000*Math.random() + 930, 'ground');
+     ledge.body.immovable = true;
+     var ledge = platforms.create(2750, 1860*Math.random() + 1130, 'ground');
+     ledge.body.immovable = true;
+     var ledge = platforms.create(2750, 820*Math.random() + 220, 'ground');
+     ledge.body.immovable = true;
+     
+     var ledge = platforms.create(3000, 900*Math.random() + 800, 'ground');
+     var ledge = platforms.create(3000, 900*Math.random() + 800, 'ground');
+     ledge.body.immovable = true;
+     var ledge = platforms.create(3400, 860*Math.random() + 500, 'ground');
+     ledge.body.immovable = true;
+     var ledge = platforms.create(3400, 1850*Math.random() + 1020, 'ground');
+     ledge.body.immovable = true;
+    var ledge = platforms.create(3350, 1840*Math.random() + 940, 'ground');
+      ledge.body.immovable = true;
+    
+    var ledge = platforms.create(4000, 750*Math.random() + 300, 'ground');
+    var ledge = platforms.create(4050, 1840*Math.random() + 1860, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(4050, 880*Math.random() + 500, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(4050, 1860*Math.random() + 1000, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(4500, 1860*Math.random() + 1200, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(4400, 650*Math.random() + 200, 'ground');
+    ledge.body.immovable = true;
+    var ledge = platforms.create(4600, 1800*Math.random() + 1200, 'ground');
+    ledge.body.immovable = true;
+    
+     
+     //ledge = platforms.create(880,960*Math.random() +400, 'ground');
+     //ledge.body.immovable = true;
+     //ledge = platforms.create(1000,1460*Math.random() +900, 'ground');
+     //ledge.body.immovable = true;
+
+    // The player and its settings
+    player = game.add.sprite(32, game.world.height - 1550, 'dude');
+
+    //  We need to enable physics on the player
+    game.physics.arcade.enable(player);
+
+    //  Player physics properties. Give the little guy a slight bounce.
+    player.body.bounce.y = 0.2;
+    player.body.gravity.y = 500;
+    player.body.collideWorldBounds = true;
+
+    //  Our two animations, walking left and right.
+
+    player.animations.add('left', [0, 1, 2, 3], 10, true);
+    player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    shoot1s = game.add.group();
+    stars = game.add.group();
+
+    //  We will enable physics for any shoot1 that is created in this group
+    shoot1s.enableBody = true;
+    stars.enableBody = true;
+    scoreText.enableBody = true;
+    
+    //  Here we'll create 12 of them evenly spaced apart
+    //var noOfshoots;
+    // for (var i = 0; i < 18; i++)
+    // {
+    //     //  Create a shoot1 inside of the 'shoot1s' group
+    //     var shoot1 = shoot1s.create( game.world.randomX, 0, 'shoot1');
+
+    //     //  Let gravity do its thing
+    //     shoot1.body.gravity.y = 300;
+
+        
+    // }
+
+
+    setInterval(function(){ 
+        var shoot1 = shoot1s.create( 500*Math.random() + 5, 0, 'shoot1');
+     shoot1.body.gravity.y = 600;
+ }, 2000);
+    setInterval(function(){ 
+        var shoot1 = shoot1s.create( 500*Math.random() + 5, 0, 'shoot1');
+     shoot1.body.gravity.y = 600;
+ }, 2000);setInterval(function(){ 
+        var shoot1 = shoot1s.create( 500*Math.random() + 5, 0, 'shoot1');
+     shoot1.body.gravity.y = 600;
+ }, 2000);setInterval(function(){ 
+        var shoot1 = shoot1s.create( 500*Math.random() + 5, 0, 'shoot1');
+     shoot1.body.gravity.y = 600;
+ }, 2000);
+
+
+    setInterval(function(){ 
+    var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     shoot2.body.gravity.y = 800;
+ }, 2000);
+//setInterval(function(){ 
+    //var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+  //   shoot2.body.gravity.y = 800;
+// }, 2000);
+setInterval(function(){ 
+    var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     shoot2.body.gravity.y = 800;
+ }, 2000);setInterval(function(){ 
+    var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     shoot2.body.gravity.y = 800;
+ }, 2000);
+ //setInterval(function(){ 
+   // var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     //shoot2.body.gravity.y = 800;
+ //}, 2000);
+
+    setInterval(function(){ 
+    var shoot3 = shoot1s.create( 1500*Math.random() + 1002, 0, 'shoot1');
+     shoot3.body.gravity.y = 1000;
+ }, 2000);
+// setInterval(function(){ 
+//     var shoot3 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+//      shoot3.body.gravity.y = 800;
+//  }, 2000);
+setInterval(function(){ 
+    var shoot3 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     shoot3.body.gravity.y = 800;
+ }, 2000);setInterval(function(){ 
+    var shoot3 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+     shoot3.body.gravity.y = 800;
+ }, 2000)
+ // setInterval(function(){ 
+ //    var shoot2 = shoot1s.create( 1000*Math.random() + 502, 0, 'shoot1');
+ //     shoot2.body.gravity.y = 800;
+ // }, 2000);
+ 
+    setInterval(function(){ 
+    var shoot4 = shoot1s.create( 2000*Math.random() + 1502, 0, 'shoot1');
+     shoot4.body.gravity.y = 1250;
+ }, 2000);
+setInterval(function(){ 
+    var shoot4 = shoot1s.create( 2000*Math.random() + 1502, 0, 'shoot1');
+     shoot4.body.gravity.y = 1250;
+ }, 2000);
+// setInterval(function(){ 
+//     var shoot4 = shoot1s.create( 2000*Math.random() + 1502, 0, 'shoot1');
+//      shoot4.body.gravity.y = 1250;
+//  }, 2000);setInterval(function(){ 
+//     var shoot4 = shoot1s.create( 2000*Math.random() + 1502, 0, 'shoot1');
+//      shoot4.body.gravity.y = 1250;
+//  }, 2000);
+
+        setInterval(function(){ 
+    var shoot5 = shoot1s.create( 2500*Math.random() + 2002, 0, 'shoot1');
+     shoot5.body.gravity.y = 1500;
+ }, 2000);
+// setInterval(function(){ 
+//     var shoot5 = shoot1s.create( 2500*Math.random() + 2002, 0, 'shoot1');
+//      shoot5.body.gravity.y = 1500;
+//  }, 2000);
+setInterval(function(){ 
+    var shoot5 = shoot1s.create( 2500*Math.random() + 2002, 0, 'shoot1');
+     shoot5.body.gravity.y = 1500;
+ }, 2000);setInterval(function(){ 
+    var shoot5 = shoot1s.create( 2500*Math.random() + 2002, 0, 'shoot1');
+     shoot5.body.gravity.y = 1500;
+ }, 2000);
+
+        setInterval(function(){ 
+    var shoot6 = shoot1s.create( 3000*Math.random() + 2502, 0, 'shoot1');
+     shoot6.body.gravity.y = 1700;
+ }, 2000);
+        setInterval(function(){ 
+    var shoot6 = shoot1s.create( 3000*Math.random() + 2502, 0, 'shoot1');
+     shoot6.body.gravity.y = 1700;
+ }, 2000);setInterval(function(){ 
+    var shoot6 = shoot1s.create( 3000*Math.random() + 2502, 0, 'shoot1');
+     shoot6.body.gravity.y = 1700;
+ }, 2000);setInterval(function(){ 
+    var shoot6 = shoot1s.create( 3000*Math.random() + 2502, 0, 'shoot1');
+     shoot6.body.gravity.y = 1700;
+ }, 2000);
+
+        setInterval(function(){ 
+    var shoot7 = shoot1s.create( 3200*Math.random() + 3002, 0, 'shoot1');
+     shoot7.body.gravity.y = 2000;
+ }, 2000);
+        setInterval(function(){ 
+    var shoot7 = shoot1s.create( 3200*Math.random() + 3002, 0, 'shoot1');
+     shoot7.body.gravity.y = 2000;
+ }, 2000);setInterval(function(){ 
+    var shoot7 = shoot1s.create( 3200*Math.random() + 3002, 0, 'shoot1');
+     shoot7.body.gravity.y = 2000;
+ }, 2000);
+
+        setInterval(function(){ 
+    var shoot8 = shoot1s.create( 3600*Math.random() + 3204, 0, 'shoot1');
+     shoot8.body.gravity.y = 2500;
+ }, 2000);
+setInterval(function(){ 
+    var shoot8 = shoot1s.create( 3600*Math.random() + 3204, 0, 'shoot1');
+     shoot8.body.gravity.y = 2500;
+ }, 2000);setInterval(function(){ 
+    var shoot8 = shoot1s.create( 3600*Math.random() + 3204, 0, 'shoot1');
+     shoot8.body.gravity.y = 2500;
+ }, 2000);
+
+    setInterval(function(){ 
+    var shoot10 = shoot1s.create( 4000*Math.random() + 3605, 0, 'shoot1');
+     shoot10.body.gravity.y = 2800;
+ }, 2000);
+setInterval(function(){ 
+    var shoot10 = shoot1s.create( 4000*Math.random() + 3605, 0, 'shoot1');
+     shoot10.body.gravity.y = 2800;
+ }, 2000);setInterval(function(){ 
+    var shoot10 = shoot1s.create( 4000*Math.random() + 3605, 0, 'shoot1');
+     shoot10.body.gravity.y = 2800;
+ }, 2000);setInterval(function(){ 
+    var shoot10 = shoot1s.create( 4000*Math.random() + 3605, 0, 'shoot1');
+     shoot10.body.gravity.y = 2800;
+ }, 2000);
+
+    setInterval(function(){ 
+    var shoot11 = shoot1s.create( 4100*Math.random() + 4005, 0, 'shoot1');
+     shoot11.body.gravity.y = 3000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot11 = shoot1s.create( 4100*Math.random() + 4005, 0, 'shoot1');
+     shoot11.body.gravity.y = 3000;
+ }, 2000);setInterval(function(){ 
+    var shoot11 = shoot1s.create( 4100*Math.random() + 4005, 0, 'shoot1');
+     shoot11.body.gravity.y = 3000;
+ }, 2000);
+
+    setInterval(function(){ 
+    var shoot12= shoot1s.create(4200*Math.random() + 4105, 0, 'shoot1');
+     shoot12.body.gravity.y = 4000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot12= shoot1s.create(4200*Math.random() + 4105, 0, 'shoot1');
+     shoot12.body.gravity.y = 4000;
+ }, 2000);setInterval(function(){ 
+    var shoot12= shoot1s.create(4200*Math.random() + 4105, 0, 'shoot1');
+     shoot12.body.gravity.y = 4000;
+ }, 2000);setInterval(function(){ 
+    var shoot12= shoot1s.create(4200*Math.random() + 4105, 0, 'shoot1');
+     shoot12.body.gravity.y = 4000;
+ }, 2000);
+
+    setInterval(function(){ 
+    var shoot13 = shoot1s.create( 4300*Math.random() + 4005, 0, 'shoot1');
+     shoot13.body.gravity.y = 5000;
+ }, 2000);
+ setInterval(function(){ 
+    var shoot13 = shoot1s.create( 4300*Math.random() + 4005, 0, 'shoot1');
+     shoot13.body.gravity.y = 5000;
+ }, 2000); setInterval(function(){ 
+    var shoot13 = shoot1s.create( 4300*Math.random() + 4005, 0, 'shoot1');
+     shoot13.body.gravity.y = 5000;
+ }, 2000); setInterval(function(){ 
+    var shoot13 = shoot1s.create( 4300*Math.random() + 4005, 0, 'shoot1');
+     shoot13.body.gravity.y = 5000;
+ }, 2000);
+
+     setInterval(function(){ 
+    var shoot14 = shoot1s.create( 4400*Math.random() + 4305, 0, 'shoot1');
+     shoot14.body.gravity.y = 6000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot14 = shoot1s.create( 4400*Math.random() + 4305, 0, 'shoot1');
+     shoot14.body.gravity.y = 6000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot14 = shoot1s.create( 4400*Math.random() + 4305, 0, 'shoot1');
+     shoot14.body.gravity.y = 6000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot14 = shoot1s.create( 4400*Math.random() + 4305, 0, 'shoot1');
+     shoot14.body.gravity.y = 6000;
+ }, 2000);
+
+
+    setInterval(function(){ 
+    var shoot9 = shoot1s.create( 4500 *Math.random() + 4405, 0, 'shoot1');
+     shoot9.body.gravity.y = 8000;
+ }, 2000);
+setInterval(function(){ 
+    var shoot9 = shoot1s.create( 4500 *Math.random() + 4405, 0, 'shoot1');
+     shoot9.body.gravity.y = 8000;
+ }, 2000);setInterval(function(){ 
+    var shoot9 = shoot1s.create( 4500 *Math.random() + 4405, 0, 'shoot1');
+     shoot9.body.gravity.y = 8000;
+ }, 2000);
+
+ setInterval(function(){ 
+    var shoot15 = shoot1s.create( 5000*Math.random() + 4505, 0, 'shoot1');
+     shoot15.body.gravity.y = 8000;
+ }, 2000);
+    
+// setInterval(function(){ 
+//     var shoot15 = shoot1s.create( 5000*Math.random() + 4505, 0, 'shoot1');
+//      shoot15.body.gravity.y = 10000;
+//  }, 2000);
+// setInterval(function(){ 
+//     var shoot15 = shoot1s.create( 5000*Math.random() + 4505, 0, 'shoot1');
+//      shoot15.body.gravity.y = 10000;
+//  }, 2000);
+   
+  setInterval(function(){ 
+        var shoot2 = shoot1s.create(600*Math.random() + 400 , 0, 'shoot1');
+     shoot2.body.gravity.y = 1000;
+ }, 3000);
+    
+    setInterval(function(){ 
+    var shoot3 = shoot1s.create( 400*Math.random() + 200, 0, 'shoot1');
+     shoot3.body.gravity.y = 1000;
+ }, 3000);
+
+    setInterval(function(){ 
+    var horizontal30 = shoot1s.create( 0 , 500, 'horizontal');
+     horizontal30.body.gravity.x= 300;
+ }, 3000);
+
+
+ //  setInterval(function(){ 
+ //        var shoot4 = shoot1s.create(800*Math.random() + 600 , 0, 'shoot1');
+ //     shoot4.body.gravity.y = 1000;
+ // }, 3000);
+
+ // setInterval(function(){ 
+ //        var shoot5 = shoot1s.create(1000*Math.random() + 800 , 0, 'shoot1');
+ //     shoot5.body.gravity.y = 1000;
+ // }, 2000);
+
+ // setInterval(function(){ 
+ //        var shoot6 = shoot1s.create(1000*Math.random() + 800 , 0, 'shoot1');
+ //     shoot6.body.gravity.y =1000;
+ // }, 1000);
+
+ // setInterval(function(){ 
+ //        var shoot7 = shoot1s.create(1300*Math.random() + 1000 , 0, 'shoot1');
+ //     shoot7.body.gravity.y = 1000;
+ // }, 1000);
+
+
+
+  setInterval(function(){ 
+        var star = stars.create(game.world.randomX , 0, 'star');
+     star.body.gravity.y = 600;
+    star.body.bounce.y = 1;
+ }, 6000);
+
+  setInterval(function(){ 
+        var star = stars.create(game.world.randomX , 0, 'star');
+     star.body.gravity.y = 600;
+    star.body.bounce.y = 1;
+ }, 6000);
+
+
+ scoreText = game.add.text(16, 16, 'Health: 100', { fontSize: '45px', fill: '#000' });
+
+ text = game.add.text(500, 16, 'Time: 0', { font: "30px Arial", fill: "#ffffff", align: "right" });
+    text.anchor.setTo(0, 0);
+
+
+scoreText1 = game.add.text( game.world.width - 300, 16, 'Health: 100', { fontSize: '45px', fill: '#000' });
+
+ 
+
+
+
+    //game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+     game.time.events.loop(Phaser.Timer.SECOND , updateCounter, this);
+
+     function updateCounter() {
+
+    counter++;
+
+    text.setText('Time: ' + counter);
+
+} 
+    //  Our controls.
+    cursors = game.input.keyboard.createCursorKeys();
+
+}
+
+function update2() {
+
+    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(stars, platforms);
+
+    game.physics.arcade.overlap(player ,shoot1s, killshoot1, touchshoot1, null, this);
+    game.physics.arcade.overlap(player ,stars, touchstar, null, this);
+   
+
+   
+
+    //  Reset the players velocity (movement)
+    player.body.velocity.x = 0;
+
+
+    if (cursors.up.isDown)
+    {
+        game.camera.y -= 4.2;
+    }
+    else if (cursors.down.isDown)
+    {
+        game.camera.y += 6;
+    }
+
+    if (cursors.left.isDown)
+    {
+        game.camera.x -= 2;
+    }
+    else if (cursors.right.isDown)
+    {
+        game.camera.x += 2;
+    }
+
+
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    }
+    else
+    {
+        //  Stand still
+        player.animations.stop();
+
+        player.frame = 4;
+    }
+    
+    //  Allow the player to jump if they are touching the ground.
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.body.velocity.y = -600;
+    }
+
+    // if (cursors.right.isDown) {
+    //     scoreText.velocity = 150;
+    // }
+
+    // if (cursors.left.isDown) {
+    //     scoreText.velocity = -150;
+    // }
+
+    function touchshoot1 (player , shoot1){
+
+        shoot1.kill();
+        score -= 10;
+        scoreText.text = 'Health: ' + score;
+        scoreText1.text = score + ': Health ';
+    }
+
+   
+    function touchstar(player , star){
+        star.kill();
+        score += 5;
+        scoreText.text = 'Health : ' + score;
+        scoreText1.text = score + ' : Health ' ;
+
+    }
+    
+    function killshoot1( platforms , shoot1){
+        shoot1.kill();
+
+    }
+
+    if (score <= 0) {
+        player.kill();
+
+        game.state.start('gameState3');
+    }
+
+    else if (score >= 200) {
+        player.kill();
+
+        game.state.start('gameState3');
+    }
+
+    
+}
+
+function preload3(){
+
+}
+
+function create3(){ 
+    coreText = game.add.text(500, 330, 'Good game!!!', { fontSize: '42px', fill: '#FFF' });
+    scoreText.anchor.setTo(0.5,0.5);
+}
+
+function update3(){
+
+}
+</script>
+
+</body>
+</html>
